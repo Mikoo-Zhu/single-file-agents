@@ -231,7 +231,7 @@ Your LaTeX equation:
     <instruction>Identify the main clauses, obligations, timelines, and responsibilities mentioned.</instruction>
     <instruction>Summarize these points in simple, accessible language, avoiding jargon and unnecessary complexity.</instruction>
     <instruction>Highlight any deadlines or financial obligations that appear in the text.</instruction>
-    <instruction>Create a list of recommended action points that the user should consider taking, based on the contract’s provisions.</instruction>
+    <instruction>Create a list of recommended action points that the user should consider taking, based on the contract's provisions.</instruction>
     <instruction>Keep the final output organized, starting with a structured summary of key clauses, then listing action points clearly.</instruction>
     <instruction>Use the examples to understand how to structure the summary and action points.</instruction>
 </instructions>
@@ -402,21 +402,32 @@ def main():
     if not openai_api_key:
         print("Error: OPENAI_API_KEY environment variable is not set")
         sys.exit(1)
-    openai.api_key = openai_api_key
-    # 修改基础 URL
-    openai.base_url = "https://openrouter.ai/api/v1"
-
+    
     try:
-        # Use OpenAI's ChatCompletion API with the o3-mini model and high reasoning effort settings.
-        response = openai.chat.completions.create(
+        # 创建一个 OpenAI 客户端实例，并设置基础 URL
+        client = openai.OpenAI(
+            api_key=openai_api_key,
+            base_url="https://openrouter.ai/api/v1"
+        )
+
+        # 使用 OpenAI 的 ChatCompletion API
+        response = client.chat.completions.create(
             model="openai/o3-mini-high",
             reasoning_effort="high",
             messages=[{"role": "user", "content": prompt}],
         )
-        # Output the response from the OpenAI model.
-        print(response.choices[0].message.content.strip())
+        
+        # 确保正确访问响应内容
+        if hasattr(response, 'choices') and len(response.choices) > 0:
+            print(response.choices[0].message.content.strip())
+        else:
+            print("No choices found in the response.")
+            
     except Exception as e:
         print(f"Error occurred: {str(e)}")
+        # 如果是特定的 OpenAI 错误，提供更详细的信息
+        if hasattr(e, 'response') and hasattr(e.response, 'text'):
+            print(f"API Error details: {e.response.text}")
         sys.exit(1)
 
 
