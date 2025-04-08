@@ -395,6 +395,7 @@ def main():
 
     # Replace the placeholder with our concatenated user input.
     prompt = META_PROMPT.replace("{{user-input}}", user_input)
+    # os.environ["OPENAI_API_BASE"] = "https://openrouter.ai/api/v1"
 
     # Set up OpenAI API key from the environment variable.
     openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -402,11 +403,13 @@ def main():
         print("Error: OPENAI_API_KEY environment variable is not set")
         sys.exit(1)
     openai.api_key = openai_api_key
+    # 修改基础 URL
+    openai.base_url = "https://openrouter.ai/api/v1"
 
     try:
         # Use OpenAI's ChatCompletion API with the o3-mini model and high reasoning effort settings.
         response = openai.chat.completions.create(
-            model="o3-mini",
+            model="openai/o3-mini-high",
             reasoning_effort="high",
             messages=[{"role": "user", "content": prompt}],
         )
