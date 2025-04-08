@@ -1,0 +1,21 @@
+# Robot Configuration
+robot_model:
+  # URDF path relative to pybullet_data or absolute path
+  urdf_path: "kuka_iiwa/model.urdf"
+  # Example: Define joint limits (replace with actual values if known)
+  joint_limits:
+    lower: [-2.96, -2.09, -2.96, -2.09, -2.96, -2.09, -3.05]
+    upper: [ 2.96,  2.09,  2.96,  2.09,  2.96,  2.09,  3.05]
+
+# Simulation Parameters
+simulation:
+  time_step: 0.00416666666 # Corresponds to 1/240 Hz
+  duration_seconds: 60 # Increased duration to 60 seconds
+  use_gui: True
+
+# Controller Parameters
+controller:
+  frequency_hz: 500
+  # Example PD gains (tune these based on the robot)
+  kp: 50.0
+  kd: 10.0

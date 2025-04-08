@@ -1,0 +1,13 @@
+# Core dependencies
+numpy
+pybullet
+PyYAML # For reading config files
+
+# Optional dependencies (uncomment as needed)
+# scipy
+# opencv-python
+# torch
+# tensorflow
+
+# Note: This project assumes a ROS 2 (e.g., Humble) installation.
+# Please follow the official ROS 2 installation guide for your OS.
